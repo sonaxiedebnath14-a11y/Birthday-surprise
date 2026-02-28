@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body{
+  margin:0;
+  background:linear-gradient(#ffe4f2,#e8f0ff);
+  font-family:'Quicksand',sans-serif;
+  text-align:center;
+  color:#5a3d5c;
+  overflow-x:hidden;
+}
+
+section{
+  display:none;
+  min-height:100vh;
+  padding:50px 20px;
+}
+
+section.active{
+  display:block;
+  animation:fadeUp 0.8s ease;
+}
+
+h1{
+  font-family:'Playfair Display',serif;
+  font-size:2.6em;
+  animation:softPop 0.9s ease;
+}
+
+p{
+  font-size:1.1em;
+  animation:fadeUp 1s ease;
+}
+
+button{
+  background:#ffb6d5;
+  border:none;
+  padding:14px 34px;
+  margin:18px;
+  font-size:1.15em;
+  border-radius:40px;
+  cursor:pointer;
+  transition:0.3s;
+  animation:float 3s ease-in-out infinite;
+}
+
+button:hover{
+  background:#ff95c2;
+  transform:scale(1.12);
+}
+
+.back{
+  background:#cfdcff;
+  animation:none;
+}
+
+.options button{
+  display:block;
+  margin:22px auto;
+  opacity:0;
+  animation:optionPop 0.8s ease forwards;
+}
+
+.options button:nth-child(1){animation-delay:0.2s;}
+.options button:nth-child(2){animation-delay:0.5s;}
+.options button:nth-child(3){animation-delay:0.8s;}
+
+#nextBtn{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#ffd1e8;
+  font-size:1em;
+  padding:10px 22px;
+  border-radius:30px;
+}
+
+img, video{
+  max-width:85%;
+  border-radius:22px;
+  margin:18px 0;
+  animation:softPop 0.8s ease;
+}
+
+#cakeImg{
+  cursor:pointer;
+  animation:wobble 2.5s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(25px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+@keyframes softPop{
+  0%{transform:scale(0.9);opacity:0;}
+  60%{transform:scale(1.05);}
+  100%{transform:scale(1);opacity:1;}
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-6px);}
+}
+
+@keyframes optionPop{
+  to{opacity:1;transform:translateY(0);}
+}
+
+@keyframes wobble{
+  0%,100%{transform:rotate(0deg);}
+  25%{transform:rotate(1deg);}
+  75%{transform:rotate(-1deg);}
+}
+
+/* Floating hearts */
+.heart{
+  position:fixed;
+  top:-10px;
+  animation:fall 6s linear infinite;
+}
+
+@keyframes fall{
+  to{transform:translateY(110vh);opacity:0;}
+}
+</style>
+</head>
+<body>
+
+<!-- 🎵 MUSIC -->
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- 🌸 START PAGE -->
+<section id="start" class="active">
+  <h1>Happy Birthday & Advanced Happy Anniversary 💐❤️</h1>
+  <p>This little world is made just for you 🤍</p>
+  <button onclick="startExperience()">Start 💖</button>
+</section>
+
+<!-- 🔐 PASSWORD PAGE -->
+<section id="password">
+  <h1>Enter password 🔐</h1>
+  <p>Hint: nickname</p>
+  <input id="passwordInput" placeholder="Type here">
+  <br>
+  <button onclick="checkPassword()">Unlock 💖</button>
+  <p id="passError"></p>
+</section>
+
+<!-- REST OF FLOW -->
+<section id="question">
+  <h1>Will you go on this tiny love adventure with me? 🌷</h1>
+  <button onclick="goTo('options')">Yes 💖</button>
+  <button onclick="nope()">No 😐</button>
+  <p id="noText"></p>
+</section>
+
+<section id="options">
+  <h1>Choose a gift Babygirl😘</h1>
+  <div class="options">
+    <button onclick="goTo('letter')">A love letter 💌</button>
+    <button onclick="goTo('scrapbook')">Memory scrapbook 💖</button>
+    <button onclick="goTo('surprise')">A small surprise for you 🤭🥰</button>
+  </div>
+  <button id="nextBtn" onclick="goTo('permission')">Next ➜</button>
+</section>
+
+<section id="letter">
+  <h1>A love letter 💌</h1>
+  <img src="letter.png">
+  <button class="back" onclick="goTo('options')">⬅ Back</button>
+</section>
+
+<section id="scrapbook">
+  <h1>Memory scrapbook 💖</h1>
+  <img src="scrap.png">
+  <button class="back" onclick="goTo('options')">⬅ Back</button>
+</section>
+
+<section id="surprise">
+  <h1>A small surprise for you 🤭🥰</h1>
+  <p id="wishText">Tap the cake ✨</p>
+  <img id="cakeImg" src="cake_closed.png" onclick="wishTap()">
+  <div id="wishResult" style="display:none;">
+    <h2>Wish granted ✨💖</h2>
+    <img src="bouquet.png">
+    <p>Always you 🤍</p>
+    <button class="back" onclick="goTo('options')">⬅ Back</button>
+  </div>
+</section>
+
+<section id="permission">
+  <h1>Before I show you this… 🥺</h1>
+  <p>May I?</p>
+  <button onclick="goTo('finalReveal')">Yes 💖</button>
+  <button onclick="permissionNo()">No 🙈</button>
+  <p id="permText"></p>
+</section>
+
+<section id="finalReveal">
+  <h1>For you 🤍</h1>
+  <video src="surprise.mp4" autoplay controls></video>
+  <p>Thank you for choosing all of me 💖</p>
+</section>
+
+<script>
+function startExperience(){
+  document.getElementById("bgMusic").currentTime = 0;
+  document.getElementById("bgMusic").play();
+  goTo('password');
+}
+
+function goTo(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+/* 🔐 PASSWORD */
+function checkPassword(){
+  const val = passwordInput.value.trim().toLowerCase();
+  if(val === "kharoos "){
+    goTo('question');
+  }else{
+    passError.innerText = "Wrong one 👀 try again";
+  }
+}
+
+let noCount=0;
+function nope(){
+  noText.innerText = noCount++ ? "Nice try. Click YES 😑" : "HOW DARE YOU 😤 try again.";
+}
+
+let permCount=0;
+function permissionNo(){
+  permText.innerText = permCount++ ? "You HAVE to say yes now 😌" : "Come on… please? 🥺";
+}
+
+let wishState=0;
+function wishTap(){
+  if(wishState===0){
+    cakeImg.src="cake_open.png";
+    wishText.innerText="Make a wish 🎀";
+    cakeImg.style.animation="none";
+    wishState++;
+  }else{
+    cakeImg.src="cake_cut.png";
+    wishText.innerText="Wish granted ✨";
+    wishResult.style.display="block";
+  }
+}
+
+/* Floating hearts */
+setInterval(()=>{
+  const h=document.createElement('div');
+  h.className='heart';
+  h.innerText='💗';
+  h.style.left=Math.random()*100+'vw';
+  h.style.fontSize=Math.random()*20+15+'px';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},500);
+</script>
+
+</body>
+</html>
